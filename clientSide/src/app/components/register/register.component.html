@@ -1,0 +1,60 @@
+<h1 class="page-header">Register</h1>
+
+<div class="row show-hide-message">
+  <div [ngClass]="messageClass">
+    {{ message }}
+  </div>
+</div>
+
+<form [formGroup]="form" (submit)="onRegisterSubmit()">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <div [ngClass]="{'has-error': (form.controls.username.errors && form.controls.username.dirty) || (!userValid && form.controls.username.dirty), 
+                     'has-success': !form.controls.username.errors && userValid}">
+      <input type="text" name="username" formControlName="username" class="form-control" placeholder="*Username" (blur)="checkUsername()">
+      <ul class="help-block">
+        <li *ngIf="(form.controls.username.errors?.required && form.controls.username.dirty)">This field is required</li>
+        <li *ngIf="(form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength) && form.controls.username.dirty">It should have a Minimum length of 3 and Maximum length of 15</li>        
+        <li *ngIf="userMessage && !form.controls.username.errors?.required && !(form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength)">{{ userMessage }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <div [ngClass]="{'has-error': (form.controls.email.errors && form.controls.email.dirty) ||(!emailValid && form.controls.email.dirty),
+                     'has-success': !form.controls.email.errors && emailValid}">
+      <input type="text" name="email" formControlName="email" class="form-control" placeholder="*E-mail" (blur)="checkEmail()">
+      <ul class="help-block">
+        <li *ngIf="form.controls.email.errors?.required && form.controls.email.dirty">This field is required</li>
+        <li *ngIf="((form.controls.email.errors?.minlength || form.controls.email.errors?.maxlength) && form.controls.email.dirty)">It should have a Minimum length of 8 and Maximum length of 30</li>        
+        <li *ngIf="emailMessage && !form.controls.email.errors?.required && !(form.controls.email.errors?.minlength || form.controls.email.errors?.maxlength)">{{ emailMessage }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <div [ngClass]="{'has-error': (form.controls.password.errors && form.controls.password.dirty),
+                    'has-success': !form.controls.password.errors}">
+      <input type="text" class="form-control" name="password" formControlName="password" placeholder="*Password">
+      <ul class="help-block">
+        <li *ngIf="(form.controls.password.errors?.required && form.controls.password.dirty)">This field is required</li>
+        <li *ngIf="((form.controls.password.errors?.minlength || form.controls.password.errors?.maxlength) && form.controls.password.dirty)">It should have a Minimum length of 8 and Maximum length of 35</li>        
+      </ul>
+    </div>
+  </div>
+  <div class="from-group">
+    <label for="confirm">Confirm Password</label>
+    <div [ngClass]="{'has-error': (form.controls.confirm.errors && form.controls.confirm.dirty) || 
+    (form.errors?.matchingPasswords && form.controls.confirm.dirty),
+                     'has-success': !form.controls.confirm.errors && !form.errors?.matchingPasswords}">
+      <input type="text" class="form-control" name="confirm" formControlName="confirm" placeholder="*Confirm Password">
+      <ul class="help-block">
+        <li *ngIf="(form.controls.confirm.errors && form.controls.confirm.dirty)">This field is required</li>
+        <li *ngIf="form.errors?.matchingPasswords && form.controls.confirm.dirty">Passwords do not match</li>
+      </ul>
+    </div>
+    <br>
+  </div>
+  <input [disabled]="!form.valid" type="submit" class="btn btn-success" value="Submit">
+</form>
+
